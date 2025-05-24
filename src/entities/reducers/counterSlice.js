@@ -209,6 +209,19 @@ export const getProductFilter = createAsyncThunk(
   }
 );
 
+export const GetUserId = createAsyncThunk("counter/GetUSerId", async (id) => {
+  const token = localStorage.getItem("Token");
+
+  try {
+    let { data } = await axios.get(`${api}/UserProfile/get-user-profile-by-id?id=${id}`,{
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return data.data;
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 export const login = createAsyncThunk(
   "counter/login",
   async (user, thunkAPI) => {
@@ -235,9 +248,9 @@ export const counterSlice = createSlice({
     totalprice: "",
     discountprice: "",
     loginError: null,
-    user: savedToken ? jwtDecode(savedToken) : null,
+    user: savedToken ? jwtDecode(savedToken) : {},
     wishlist: JSON.parse(localStorage.getItem("wishlist")) || [],
-    filterPoducts: [],
+ 
   },
   reducers: {
     logout: (state) => {
@@ -261,8 +274,8 @@ export const counterSlice = createSlice({
       .addCase(get.fulfilled, (state, action) => {
         state.data = action.payload;
       })
-      .addCase(getProductFilter.fulfilled, (state, action) => {
-        state.filterPoducts = action.payload;
+      .addCase(GetUserId.fulfilled, (state, action) => {
+        state.user = action.payload;
       })
       .addCase(GetBrands.fulfilled, (state, action) => {
         state.brands = action.payload;
