@@ -1,4 +1,13 @@
 import { lazy } from "react";
 export const Layout = lazy(()=>import ('../layout/layout'))
+export const Home = lazy(()=>import ('../home/home'))
 export const About = lazy(()=>import ('../about/about'))
 export const Account = lazy(()=>import ('../account/account'))
+export const Cart = lazy(()=>import ('../cart/cart'))
+export const Contact = lazy(()=>import ('../contact/contact'))
+export const GetId = lazy(()=>import ('../getByid/getId'))
+export const Login = lazy(()=>import ('../login/login'))
+export const Products = lazy(()=>import ('../products/products'))
+export const Signup = lazy(()=>import ('../signup/signup'))
+export const Wishlist = lazy(()=>import ('../wishlist/wishlist'))
+export const Checkout = lazy(()=>import ('../checkout/checkout'))

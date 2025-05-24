@@ -13,11 +13,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const Header = () => {
   let cart = useSelector((store) => store.counter.cart);
-// console.log(cart);
+  // console.log(cart);
   let { wishlist } = useSelector((store) => store.counter);
-// console.log(wishlist);
+  // console.log(wishlist);
 
-  
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetCart());
@@ -34,16 +33,44 @@ const Header = () => {
           <img src={logo} alt="" className="hidden md:inline" />
           <ul className="md:flex gap-[32px] hidden ">
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                }
+              >
+                Home
+              </NavLink>
             </li>
             <li>
-              <NavLink to="contact">Contact</NavLink>
+              <NavLink
+                to="contact"
+                className={({ isActive }) =>
+                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                }
+              >
+                Contact
+              </NavLink>
             </li>
             <li>
-              <NavLink to="about">About</NavLink>
+              <NavLink
+                to="about"
+                className={({ isActive }) =>
+                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                }
+              >
+                About
+              </NavLink>
             </li>
             <li>
-              <NavLink to="signup">Sign Up</NavLink>
+              <NavLink
+                to="signup"
+                className={({ isActive }) =>
+                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                }
+              >
+                Sign Up
+              </NavLink>
             </li>
           </ul>
           <div className="flex items-center gap-[24px]">
@@ -52,12 +79,12 @@ const Header = () => {
               placeholder="What are you looking for?"
               className="bg-[#F5F5F5] p-[3px_10px] rounded-[5px] w-[240px] hidden md:inline"
             />
-            <NavLink to='wishlist'>
-            <IconButton color="inherit">
-                  <Badge badgeContent={wishlist.length} color="error">
+            <NavLink to="wishlist">
+              <IconButton color="inherit">
+                <Badge badgeContent={wishlist.length} color="error">
                   <FavoriteBorderIcon className="bg-white rounded-full p-[3px]" />
-                  </Badge>
-                </IconButton>
+                </Badge>
+              </IconButton>
             </NavLink>
             <div>
               <NavLink to="cart">
