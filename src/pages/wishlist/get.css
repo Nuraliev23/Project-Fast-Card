@@ -1,0 +1,46 @@
+
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+  
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper {
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .mywiper2 {
+    height: 80%;
+    width: 100%;
+  }
+  
+  .mywiper {
+    height: 20%;
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
+  
+  .mywiper .swiper-slide {
+    width: 25%;
+    height: 100%;
+    opacity: 0.4;
+  }
+  
+  .mywiper .swiper-slide-thumb-active {
+    opacity: 1;
+  }
+
+  
