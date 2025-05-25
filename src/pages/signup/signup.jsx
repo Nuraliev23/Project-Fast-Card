@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { NavLink } from "react-router";
 import axios from "axios";
+import toast from "react-hot-toast";
+import saveSettings from "react-hot-toast";
 let api = import.meta.env.VITE_API_URL;
 
 
@@ -24,10 +26,18 @@ const Signup = () => {
     try {
       await axios.post(`${api}/Account/register`,userinf)
       seterror("success")
+      toast.success('Your account Successfully Created')
+     
     } catch (error) {
       seterror("error")
+      toast.error("This account is already registered")
       console.error(error);
     }
+    setaddname('')
+    setaddphone('')
+    setaddemail('')
+    setaddpassword('')
+    setaddconpassword('')
   }
 
   return (
@@ -96,7 +106,7 @@ const Signup = () => {
             </div>
           </div>
         </div>
-        <button onClick={addUser} className="bg-[#DB4444] text-white w-[400px] py-[16px]">
+        <button onClick={addUser} className="bg-[#DB4444] text-white w-[400px] py-[16px] cursor-pointer">
           Create Account
         </button>
         

@@ -7,10 +7,9 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 let api = import.meta.env.VITE_API_URL;
 
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import "./get.css";
 import Button from "../../shared/components/button";
-import { addToCart, addToWishlist, get, removeFromWishlist } from "../../entities/reducers/counterSlice";
+import { addToCart, addToWishlist, get} from "../../entities/reducers/counterSlice";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -23,7 +22,6 @@ import stars from "../../pages/home/images/Five star.png";
 
 const Wishlist = () => {
   let { data } = useSelector((store) => store.counter);
-
   useEffect(() => {
     dispatch(get());
   }, []);
@@ -64,7 +62,7 @@ const Wishlist = () => {
                 </div>
                 <button
                   onClick={() => dispatch(addToCart(e.id))}
-                  className="bg-black text-white w-[100%]"
+                  className="bg-black text-white w-[100%] cursor-pointer"
                 >
                   Add To Cart
                 </button>
@@ -72,9 +70,7 @@ const Wishlist = () => {
             </div>
           ))}
         </div>
-        {/* <div className="pt-[40px]">
-          <Button text="View All Products" />
-        </div> */}
+
       </section>
 
       <div className="flex items-center gap-[16px] max-w-[1200px]  mx-auto  mt-[100px]">
@@ -142,7 +138,7 @@ const Wishlist = () => {
                   <img src={stars} alt="stars" />
                   <button
                     onClick={() => dispatch(addToCart(e.id))}
-                    className="bg-black text-white w-[100%]"
+                    className="bg-black text-white w-[100%] cursor-pointer"
                   >
                     Add To Cart
                   </button>

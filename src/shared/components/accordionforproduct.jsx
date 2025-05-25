@@ -9,6 +9,9 @@ import Button from "../../shared/components/button";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
+import toast from "react-hot-toast";
+
+
 import stars from "../../pages/home/images/Five star.png";
 
 let api = import.meta.env.VITE_API_URL;
@@ -23,6 +26,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router";
 import { TextField } from "@mui/material";
 import axios from "axios";
+
+
 
 const Accordionforproduct = () => {
   const dispatch = useDispatch();
@@ -49,15 +54,20 @@ const Accordionforproduct = () => {
     }
   };
 
+  function post() {
+    toast.success("Added to Wishlist");
+  }
+  function erpost() {
+    toast.error("Deleted from Wishlist");
+  }
+
   React.useEffect(() => {
     dispatch(get2());
     dispatch(GetBrands());
     dispatch(GetMinPrice(300));
   }, []);
   React.useEffect(() => {
-    
       getProductFilter(JSON.stringify(brandId), JSON.stringify(categoryId))
-    
   }, [brandId, categoryId]);
   return (
     <div>
@@ -289,8 +299,22 @@ const Accordionforproduct = () => {
                         <VisibilityIcon className="bg-white rounded-full p-[3px]" />
                       </NavLink>
                     </button>
-                    <button onClick={() => dispatch(addToWishlist(e))}>
-                      <FavoriteBorderIcon
+     <button
+                      onClick={() => {
+                        const alreadyInWishlist = wishlist.find(
+                          (el) => el.id === e.id
+                        );
+
+                        dispatch(addToWishlist(e)); 
+
+                        if (alreadyInWishlist) {
+                          erpost();
+                        }
+                        else{
+                          post()
+                        }
+                      }}
+                    >                      <FavoriteBorderIcon 
                         className="bg-white rounded-full p-[3px]"
                         style={{
                           backgroundColor: wishlist.find((el) => el.id == e.id)

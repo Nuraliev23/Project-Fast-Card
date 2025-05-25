@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 let api = import.meta.env.VITE_API_URL;
 import { jwtDecode } from "jwt-decode";
+import toast from "react-hot-toast";
 const savedToken = localStorage.getItem("Token");
 
 export const get = createAsyncThunk("counter/get", async () => {
@@ -43,7 +44,7 @@ export const GetCart = createAsyncThunk("counter/GetCart", async () => {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    return data.data[0].productsInCart;
+    return data.data[0];
   } catch (error) {
     console.error(error);
   }
@@ -62,9 +63,13 @@ export const addToCart = createAsyncThunk(
         }
       );
       dispatch(GetCart());
+      toast.success("Successfully added to cart")
       return data.data;
+
     } catch (error) {
       console.error(error);
+      
+      toast.error("Already have this product")
     }
   }
 );
@@ -87,13 +92,16 @@ export const DeleteFromCart = createAsyncThunk(
     }
   }
 );
-export const ClearCart = createAsyncThunk("counter/ClearCart", async () => {
+export const ClearCart = createAsyncThunk("counter/ClearCart", async (_,{dispatch}) => {
   try {
     const token = localStorage.getItem("Token");
     const { data } = await axios.delete(`${api}/Cart/clear-cart`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return data.data;
+    dispatch(GetCart())
+    toast.success("All product removed from cart")
+    return data.data[0].productsInCart;
+
   } catch (error) {
     console.error(error);
   }
@@ -111,7 +119,7 @@ export const IncreaseCart = createAsyncThunk(
         }
       );
       dispatch(GetCart());
-      return data.data;
+      return data.data[0].productsInCart;
     } catch (error) {
       console.error(error);
     }
@@ -130,46 +138,13 @@ export const ReduceCart = createAsyncThunk(
         }
       );
       dispatch(GetCart());
-      return data.data;
+      return data.data[0].productsInCart;
     } catch (error) {
       console.error(error);
     }
   }
 );
-export const GetTotalPrice = createAsyncThunk(
-  "counter/GetTotalPrice",
-  async () => {
-    try {
-      const token = localStorage.getItem("Token");
-      const { data } = await axios.get(
-        `https://store-api.softclub.tj/Cart/get-products-from-cart`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      return data.data[0].totalPrice;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-);
-export const GetDiscountPrice = createAsyncThunk(
-  "counter/GetDiscountPrice",
-  async () => {
-    try {
-      const token = localStorage.getItem("Token");
-      const { data } = await axios.get(
-        `https://store-api.softclub.tj/Cart/get-products-from-cart`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      return data.data[0].totalDiscountPrice;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-);
+
 
 export const GetBrands = createAsyncThunk("counter/GetBrands", async () => {
   try {
@@ -244,13 +219,14 @@ export const counterSlice = createSlice({
     cart: [],
     brands: [],
     minprice: [],
+    totalProduct:0,
     token: "",
     totalprice: "",
     discountprice: "",
     loginError: null,
     user: savedToken ? jwtDecode(savedToken) : {},
     wishlist: JSON.parse(localStorage.getItem("wishlist")) || [],
- 
+
   },
   reducers: {
     logout: (state) => {
@@ -301,7 +277,11 @@ export const counterSlice = createSlice({
         state.loginError = action.payload; // "Invalid credentials"
       })
       .addCase(GetCart.fulfilled, (state, action) => {
-        state.cart = action.payload;
+        state.cart = action.payload.productsInCart;
+        state.totalProduct = action.payload.totalProducts;
+        state.discountprice = action.payload.totalDiscountPrice;
+        state.totalprice = action.payload.totalPrice;
+
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.cart.push(action.payload);
@@ -315,12 +295,8 @@ export const counterSlice = createSlice({
       .addCase(IncreaseCart.fulfilled, (state, action) => {
         state.cart = action.payload;
       })
-      .addCase(GetTotalPrice.fulfilled, (state, action) => {
-        state.totalprice = action.payload;
-      })
-      .addCase(GetDiscountPrice.fulfilled, (state, action) => {
-        state.discountprice = action.payload;
-      });
+    
+     
   },
 });
 

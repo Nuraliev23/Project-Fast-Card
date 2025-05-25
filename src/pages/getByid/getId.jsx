@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router";
-import { getByid } from "../../entities/reducers/counterSlice";
+import { addToWishlist, getByid } from "../../entities/reducers/counterSlice";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+
+import toast from "react-hot-toast";
+
 let api = import.meta.env.VITE_API_URL;
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -13,31 +16,36 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ReplayIcon from "@mui/icons-material/Replay";
 import "./get.css";
 import Button from "../../shared/components/button";
-import {  addToCart, get } from "../../entities/reducers/counterSlice";
+import { addToCart, get } from "../../entities/reducers/counterSlice";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-import { FreeMode, Navigation, Thumbs,Autoplay, } from "swiper/modules";
+import { FreeMode, Navigation, Thumbs, Autoplay } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import stars from "../../pages/home/images/Five star.png";
 
-const GetId = () => {
+function post() {
+  toast.success("Added to Wishlist");
+}
+function erpost() {
+  toast.error("Deleted from Wishlist");
+}
 
+const GetId = () => {
+  let { wishlist } = useSelector((store) => store.counter);
 
   let { data } = useSelector((store) => store.counter);
 
-    useEffect(() => {
-      dispatch(get());
-
-    }, []);
+  useEffect(() => {
+    dispatch(get());
+  }, []);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   const dispatch = useDispatch();
   let { info } = useSelector((store) => store.counter);
-  console.log(info);
 
   let { id } = useParams();
   useEffect(() => {
@@ -108,7 +116,9 @@ const GetId = () => {
             </p>
           </div>
           <p className="text-[24px] font-bold ">$ {info?.price}</p>
-          <p className=" border-b-[1px] pb-[10px] text-[#0000006d] border-b-[#0000006d]">{info?.description}</p>
+          <p className=" border-b-[1px] pb-[10px] text-[#0000006d] border-b-[#0000006d]">
+            {info?.description}
+          </p>
           <div className="flex items-center gap-[20px]">
             <p>Colours:</p>
             <p
@@ -154,30 +164,28 @@ const GetId = () => {
             </div>
           </div>
           <div>
-
-   
             <div className="flex items-center gap-[22px] border-[1px] p-[20px]">
               <LocalShippingIcon />
-              <div >
+              <div>
                 <p className="text-[22px]">Free Delivery</p>
                 <p>Enter your postal code for Delivery Availability</p>
               </div>
             </div>
             <div className="flex items-center gap-[22px] border-[1px] p-[20px]">
-            <ReplayIcon />
-              <div >
+              <ReplayIcon />
+              <div>
                 <p className="text-[22px]">Return Delivery</p>
                 <p>Free 30 Days Delivery Returns. Details</p>
               </div>
             </div>
-            </div>
+          </div>
         </aside>
       </section>
       <div className="flex items-center gap-[16px] max-w-[1200px]  mx-auto  mt-[100px]">
-          <p className="bg-[#DB4444] w-[20px] h-[40px] rounded-[4px]"></p>
-          <p className="text-[#DB4444]">Related Item</p>
-        </div>
-        <section className="flex flex-col items-center max-w-[1200px] mx-auto pt-[32px] border-b-[1px] border-b-[#d6d4d4]  pb-[60px] ">
+        <p className="bg-[#DB4444] w-[20px] h-[40px] rounded-[4px]"></p>
+        <p className="text-[#DB4444]">Related Item</p>
+      </div>
+      <section className="flex flex-col items-center max-w-[1200px] mx-auto pt-[32px] border-b-[1px] border-b-[#d6d4d4]  pb-[60px] ">
         <Swiper
           loop={true}
           spaceBetween={10}
@@ -214,11 +222,38 @@ const GetId = () => {
                     -40%
                   </p>
                   <div className="flex gap-[8px]">
-                  <button>
-                        <NavLink to={`/getId/${e.id}`}>
+                    <button>
+                      <NavLink to={`/getId/${e.id}`}>
                         <VisibilityIcon className="bg-white rounded-full p-[3px]" />
-                        </NavLink>
-                    </button>                    <FavoriteBorderIcon className="bg-white rounded-full p-[3px]" />
+                      </NavLink>
+                    </button>{" "}
+                    <button
+                      onClick={() => {
+                        const alreadyInWishlist = wishlist.find(
+                          (el) => el.id === e.id
+                        );
+
+                        dispatch(addToWishlist(e));
+
+                        if (alreadyInWishlist) {
+                          erpost();
+                        } else {
+                          post();
+                        }
+                      }}
+                    >
+                      <FavoriteBorderIcon
+                        className="bg-white rounded-full p-[3px] cursor-pointer"
+                        style={{
+                          backgroundColor: wishlist.find((el) => el.id == e.id)
+                            ? "#DB4444"
+                            : "white",
+                          color: wishlist.find((el) => el.id == e.id)
+                            ? "white"
+                            : "blue",
+                        }}
+                      />
+                    </button>{" "}
                   </div>
                 </div>
                 <img
@@ -236,7 +271,12 @@ const GetId = () => {
                     <p>{e.id}</p>
                   </div>
                   <img src={stars} alt="stars" />
-                  <button  onClick={()=>dispatch(addToCart(e.id))} className="bg-black text-white w-[100%]">Add To Cart</button>        
+                  <button
+                    onClick={() => dispatch(addToCart(e.id))}
+                    className="bg-black text-white w-[100%]"
+                  >
+                    Add To Cart
+                  </button>
                 </div>
               </div>
             </SwiperSlide>
@@ -247,7 +287,6 @@ const GetId = () => {
         </div>
       </section>
     </div>
-
   );
 };
 

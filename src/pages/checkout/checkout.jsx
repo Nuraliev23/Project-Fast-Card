@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  GetTotalPrice,
-  GetDiscountPrice,
   GetCart,
+  ClearCart,
 } from "../../entities/reducers/counterSlice";
+import toast from "react-hot-toast";
 
 import oplata from "../../pages/home/images/Frame 834.png";
 import { NavLink } from "react-router";
@@ -19,9 +19,12 @@ const Checkout = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetCart());
-    dispatch(GetTotalPrice());
-    dispatch(GetDiscountPrice());
   }, []);
+
+function post() {
+  toast.success('Purchase successful')
+}
+
   return (
     <div>
       <div className="pt-[60px] pb-[40px] max-w-[1200px] m-auto">
@@ -142,13 +145,13 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between items-center">
             <div className="flex gap-[16px] items-center">
-              <input type="radio" name="rad" className="accent-black" />
+              <input type="radio" name="rad" className="accent-black cursor-pointer" />
               <p>Bank</p>
             </div>
             <img src={oplata} alt="" />
           </div>
           <div className="flex gap-[16px] items-center">
-            <input type="radio" name="rad" className="accent-black" />
+            <input type="radio" name="rad" className="accent-black cursor-pointer" />
             <p>Cash on delivery</p>
           </div>
           <div className="flex justify-between mt-6 gap-[16px] mx-auto">
@@ -164,8 +167,10 @@ const Checkout = () => {
               </button>
             </div>
           </div>
-          <button className="w-[60%] bg-red-500 hover:bg-red-600 text-white py-3 rounded-md transition mt-[30px]">
-            <NavLink to="/checkout">Place Order</NavLink>
+          <button onClick={()=>{post()
+            dispatch(ClearCart())
+          }} className="w-[60%] bg-red-500 hover:bg-red-600 text-white py-3 rounded-md transition mt-[30px] cursor-pointer">
+          <NavLink to="/">Place Order</NavLink>
           </button>
         </div>
       </section>

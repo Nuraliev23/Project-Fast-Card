@@ -6,6 +6,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "../../app/style/swiper.css";
 
+import toast from "react-hot-toast";
+
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
@@ -34,6 +36,16 @@ import { NavLink } from "react-router";
 
 let api = import.meta.env.VITE_API_URL;
 
+const handleClose = () => {
+  setAnchorEl(null);
+};
+function post() {
+  toast.success("Added to Wishlist");
+}
+function erpost() {
+  toast.error("Deleted from Wishlist");
+}
+
 const App = () => {
   const dispatch = useDispatch();
   let { data } = useSelector((store) => store.counter);
@@ -55,34 +67,17 @@ const App = () => {
           className="md:hidden bg-[#F5F5F5] p-[10px_5px] rounded-[5px] mx-auto w-[80%] "
         />
         <aside className="flex md:flex-col gap-[16px] flex-row flex-wrap">
-          <NavLink to="products">
-            <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-              Woman’s Fashion
-            </p>
-          </NavLink>
-          <NavLink to="products">
-            <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-              Electronics
-            </p>
-          </NavLink>
-          <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-            Home & Lifestyle
-          </p>
-          <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-            Medicine
-          </p>
-          <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-            Sports & Outdoor
-          </p>
-          <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-            Baby’s & Toys
-          </p>
-          <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-            Groceries & Pets
-          </p>
-          <p className="bg-[#F5F5F5] md:bg-[transparent] p-[12px_32px] md:p-[0px]">
-            Health & Beauty
-          </p>
+        {data2.map((e) => (
+            <div key={e.id}>            
+                <div className="flex flex-col gap-[8px] items-start w-full">
+                  <h1>
+                    <NavLink to="product">
+                    {e.categoryName}
+                    </NavLink>
+                    </h1>
+                </div>
+            </div>
+          ))}
         </aside>
         <aside className="w-[100%] md:h-[344px] mx-auto md:w-[80%] h-[633px]">
           <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
@@ -252,9 +247,24 @@ const App = () => {
                         <VisibilityIcon className="bg-white rounded-full p-[3px]" />
                       </NavLink>
                     </button>{" "}
-                    <button onClick={() => dispatch(addToWishlist(e))}>
+                    <button
+                      onClick={() => {
+                        const alreadyInWishlist = wishlist.find(
+                          (el) => el.id === e.id
+                        );
+
+                        dispatch(addToWishlist(e)); 
+
+                        if (alreadyInWishlist) {
+                          erpost();
+                        }
+                        else{
+                          post()
+                        }
+                      }}
+                    >
                       <FavoriteBorderIcon
-                        className="bg-white rounded-full p-[3px]"
+                        className="bg-white rounded-full p-[3px] cursor-pointer"
                         style={{
                           backgroundColor: wishlist.find((el) => el.id == e.id)
                             ? "#DB4444"
@@ -284,7 +294,7 @@ const App = () => {
                   <img src={stars} alt="stars" />
                   <button
                     onClick={() => dispatch(addToCart(e.id))}
-                    className="bg-black text-white w-[100%]"
+                    className="bg-black text-white w-[100%] cursor-pointer"
                   >
                     Add To Cart
                   </button>
@@ -425,9 +435,24 @@ const App = () => {
                         <VisibilityIcon className="bg-white rounded-full p-[3px]" />
                       </NavLink>
                     </button>{" "}
-                    <button onClick={() => dispatch(addToWishlist(e))}>
+                       <button
+                      onClick={() => {
+                        const alreadyInWishlist = wishlist.find(
+                          (el) => el.id === e.id
+                        );
+
+                        dispatch(addToWishlist(e)); 
+
+                        if (alreadyInWishlist) {
+                          erpost();
+                        }
+                        else{
+                          post()
+                        }
+                      }}
+                    >
                       <FavoriteBorderIcon
-                        className="bg-white rounded-full p-[3px]"
+                        className="bg-white rounded-full p-[3px] cursor-pointer"
                         style={{
                           backgroundColor: wishlist.find((el) => el.id == e.id)
                             ? "#DB4444"
@@ -503,9 +528,24 @@ const App = () => {
                       <VisibilityIcon className="bg-white rounded-full p-[3px]" />
                     </NavLink>
                   </button>{" "}
-                  <button onClick={() => dispatch(addToWishlist(e))}>
+                  <button
+                      onClick={() => {
+                        const alreadyInWishlist = wishlist.find(
+                          (el) => el.id === e.id
+                        );
+
+                        dispatch(addToWishlist(e)); 
+
+                        if (alreadyInWishlist) {
+                          erpost();
+                        }
+                        else{
+                          post()
+                        }
+                      }}
+                    >
                     <FavoriteBorderIcon
-                      className="bg-white rounded-full p-[3px]"
+                      className="bg-white rounded-full p-[3px] cursor-pointer"
                       style={{
                         backgroundColor: wishlist.find((el) => el.id == e.id)
                           ? "#DB4444"
@@ -532,7 +572,7 @@ const App = () => {
                 </div>
                 <button
                   onClick={() => dispatch(addToCart(e.id))}
-                  className="bg-black text-white w-[100%]"
+                  className="bg-black text-white w-[100%] cursor-pointer"
                 >
                   Add To Cart
                 </button>

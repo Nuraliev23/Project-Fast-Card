@@ -16,6 +16,7 @@ const Header = () => {
   // console.log(cart);
   let { wishlist } = useSelector((store) => store.counter);
   // console.log(wishlist);
+let {totalProduct} = useSelector((store)=>store.counter)
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -79,6 +80,7 @@ const Header = () => {
               placeholder="What are you looking for?"
               className="bg-[#F5F5F5] p-[3px_10px] rounded-[5px] w-[240px] hidden md:inline"
             />
+            <div className="hidden md:inline">
             <NavLink to="wishlist">
               <IconButton color="inherit">
                 <Badge badgeContent={wishlist.length} color="error">
@@ -86,10 +88,11 @@ const Header = () => {
                 </Badge>
               </IconButton>
             </NavLink>
+            </div>
             <div>
               <NavLink to="cart">
                 <IconButton color="inherit">
-                  <Badge badgeContent={cart.length} color="error">
+                  <Badge badgeContent={totalProduct} color="error">
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>

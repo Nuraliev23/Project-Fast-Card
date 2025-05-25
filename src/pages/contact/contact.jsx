@@ -57,7 +57,7 @@ const Contact = () => {
                   <div className="flex justify-end">
                     <button
                       type="button"
-                      className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded"
+                      className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded cursor-pointer"
                     >
                       Send Message
                     </button>

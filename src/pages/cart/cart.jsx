@@ -5,23 +5,28 @@ import {
   ClearCart,
   IncreaseCart,
   ReduceCart,
-  GetTotalPrice,
-  GetDiscountPrice,
   GetCart,
 } from "../../entities/reducers/counterSlice";
 import { NavLink } from "react-router";
 let api = import.meta.env.VITE_API_URL;
 
+import toast from "react-hot-toast";
+
+function erpost() {
+  toast.success("Product successfully removed from cart");
+}
+
 const Cart = () => {
   let cart = useSelector((store) => store.counter.cart);
+
+  console.log(cart);
+  
   let totalprice = useSelector((store) => store.counter.totalprice);
   let discountprice = useSelector((store) => store.counter.discountprice);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetCart());
     // dispatch(get());
-    dispatch(GetTotalPrice());
-    dispatch(GetDiscountPrice())
   }, []);
   return (
     <div>
@@ -36,58 +41,62 @@ const Cart = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(cart) &&
-              cart.map((el) => (
-                <tr key={el.id} className="bg-white shadow rounded-lg">
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={
-                          el.product.image
-                            ? `${api}/images/${el.product.image}`
-                            : "placeholder.jpg"
-                        }
-                        alt={el.product.productName}
-                        className="w-16 h-16 object-cover rounded"
-                      />
-                      <span className="font-medium">
-                        {el.product.productName}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 text-black font-medium">
-                    ${el.product.price}
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => dispatch(ReduceCart(el.id))}
-                        className="border rounded px-2"
-                      >
-                        -
-                      </button>
-                      <span>{String(el.quantity).padStart(2, "0")}</span>
-                      <button
-                        onClick={() => dispatch(IncreaseCart(el.id))}
-                        className="border rounded px-2"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 flex items-center gap-4">
-                    <span className="font-semibold">
-                      ${el.quantity * el.product.price}
-                    </span>
-                    <button
-                      onClick={() => dispatch(DeleteFromCart(el.id))}
-                      className="text-red-500 hover:text-red-700 text-xl"
-                    >
-                      ❌
-                    </button>
-                  </td>
-                </tr>
-              ))}
+          {
+ cart?.map((el) => (
+    <tr key={el.id} className="bg-white shadow rounded-lg">
+      <td className="py-4 px-4">
+        <div className="flex items-center gap-4">
+          <img
+            src={
+              el.product?.image
+                ? `${api}/images/${el.product.image}`
+                : "placeholder.jpg"
+            }
+            alt={el.product?.productName || "Product"} // ✅ безопасно
+            className="w-16 h-16 object-cover rounded"
+          />
+          <span className="font-medium">
+            {el.product?.productName || "Unknown Product"}
+          </span>
+        </div>
+      </td>
+      <td className="py-4 px-4 text-black font-medium">
+        ${el.product?.price ?? "0.00"}
+      </td>
+      <td className="py-4 px-4">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => dispatch(ReduceCart(el.id))}
+            className="border rounded px-2 cursor-pointer"
+          >
+            -
+          </button>
+          <span>{String(el.quantity).padStart(2, "0")}</span>
+          <button
+            onClick={() => dispatch(IncreaseCart(el.id))}
+            className="border rounded px-2 cursor-pointer"
+          >
+            +
+          </button>
+        </div>
+      </td>
+      <td className="py-4 px-4 flex items-center gap-4">
+        <span className="font-semibold">
+          ${el.product?.price ? el.quantity * el.product.price : "0.00"}
+        </span>
+        <button
+          onClick={() => {dispatch(DeleteFromCart(el.id))
+            erpost()
+          }}
+          className="text-red-500 hover:text-red-700 text-xl cursor-pointer"
+        >
+          ❌
+        </button>
+      </td>
+    </tr>
+  ))
+}
+
           </tbody>
         </table>
       </div>
@@ -101,8 +110,10 @@ const Cart = () => {
             Update Cart
           </button>
           <button
-            onClick={() => dispatch(ClearCart())}
-            className="border border-red-500 text-red-500 px-6 py-2 rounded hover:bg-red-50"
+            onClick={() => {dispatch(ClearCart())
+              
+            }}
+            className="border border-red-500 text-red-500 px-6 py-2 rounded hover:bg-red-50 cursor-pointer"
           >
             Remove all
           </button>

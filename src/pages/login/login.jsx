@@ -4,19 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../entities/reducers/counterSlice";
 import { jwtDecode } from "jwt-decode";
 import { NavLink } from "react-router";
+import toast from "react-hot-toast";
 const Login = () => {
   const [logname, setlogname] = useState("");
   const [logpassword, setlogpassword] = useState("");
   const dispatch = useDispatch();
   const loginError = useSelector((state) => state.counter.loginError);
 
-  const handleLogin = () => {
-    dispatch(
+  const handleLogin = async () => {
+    await dispatch(
       login({
         userName: logname,
         password: logpassword,
       })
     );
+    toast.success("Successfully logged in")
+    window.location.reload()
   };
 useEffect(()=>{
   setlogname("");
@@ -44,15 +47,17 @@ useEffect(()=>{
       </div>
 
       {loginError && <p className="text-red-600">{loginError}</p>}
-      <NavLink to="/">
+
+      <NavLink to={"/"}>
       <button
         onClick={handleLogin}
-        className="bg-[#DB4444] text-white w-[400px] py-[16px]"
-      >
+        
+        className="bg-[#DB4444] text-white w-[400px] py-[16px] cursor-pointer"
+        >
         Login
-
       </button>
         </NavLink>
+      
     </div>
   );
 };
