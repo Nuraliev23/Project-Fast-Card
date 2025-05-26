@@ -11,7 +11,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import toast from "react-hot-toast";
 
-
 import stars from "../../pages/home/images/Five star.png";
 
 let api = import.meta.env.VITE_API_URL;
@@ -26,8 +25,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router";
 import { TextField } from "@mui/material";
 import axios from "axios";
-
-
 
 const Accordionforproduct = () => {
   const dispatch = useDispatch();
@@ -48,7 +45,7 @@ const Accordionforproduct = () => {
       let { data } = await axios.get(
         `${api}/Product/get-products?BrandId=${brandID}&CategoryId=${categoryID}`
       );
-      setFilterProducts (data.data.products);
+      setFilterProducts(data.data.products);
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +64,7 @@ const Accordionforproduct = () => {
     dispatch(GetMinPrice(300));
   }, []);
   React.useEffect(() => {
-      getProductFilter(JSON.stringify(brandId), JSON.stringify(categoryId))
+    getProductFilter(JSON.stringify(brandId), JSON.stringify(categoryId));
   }, [brandId, categoryId]);
   return (
     <div>
@@ -299,22 +296,23 @@ const Accordionforproduct = () => {
                         <VisibilityIcon className="bg-white rounded-full p-[3px]" />
                       </NavLink>
                     </button>
-     <button
+                    <button
                       onClick={() => {
                         const alreadyInWishlist = wishlist.find(
                           (el) => el.id === e.id
                         );
 
-                        dispatch(addToWishlist(e)); 
+                        dispatch(addToWishlist(e));
 
                         if (alreadyInWishlist) {
                           erpost();
-                        }
-                        else{
-                          post()
+                        } else {
+                          post();
                         }
                       }}
-                    >                      <FavoriteBorderIcon 
+                    >
+                      {" "}
+                      <FavoriteBorderIcon
                         className="bg-white rounded-full p-[3px]"
                         style={{
                           backgroundColor: wishlist.find((el) => el.id == e.id)

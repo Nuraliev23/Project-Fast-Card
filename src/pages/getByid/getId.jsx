@@ -106,7 +106,7 @@ const GetId = () => {
           </Swiper>
         </aside>
 
-        <aside className="w-[38%] flex flex-col gap-[25px]">
+        <aside className="md:w-[38%] w-[90%]  flex flex-col gap-[25px] mx-auto">
           <h1 className="text-[24px] ">{info?.productName}</h1>
           <div className="flex items-center justify-between">
             <img src={stars} alt="" />

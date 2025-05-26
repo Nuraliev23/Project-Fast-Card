@@ -7,8 +7,8 @@ const Account = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.counter.user);
 
-  const [firstname, setFirstname] = useState('');
-  const [email, setEmail] = useState('');
+  const [firstname, setFirstname] = useState("");
+  const [email, setEmail] = useState("");
 
   const token = localStorage.getItem("Token");
 
@@ -60,7 +60,6 @@ const Account = () => {
           <aside>
             <div className="max-w-3xl mx-auto bg-white shadow-md rounded-md p-8 mt-10">
               <h2 className="text-2xl font-bold text-red-500 mb-6">Profile</h2>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm text-gray-600">First name</label>
@@ -74,8 +73,6 @@ const Account = () => {
                 <div>
                   <label className="text-sm text-gray-600">Last name</label>
                   <input
-                    value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
                     type="text"
                     className="w-full border rounded px-4 py-2 mt-1"
                   />
@@ -90,16 +87,33 @@ const Account = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600">Street address</label>
+                  <label className="text-sm text-gray-600">Phone Number</label>
+                  <input
+                    type="email"
+                    className="w-full border rounded px-4 py-2 mt-1"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-gray-600">Img</label>
+                  <input
+                  type="email"
+                    className="w-full border rounded px-4 py-2 mt-1"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-gray-600">
+                   Date Of Burthday
+                  </label>
                   <input
                     type="text"
-                    placeholder="Kingston, 5236, United State"
                     className="w-full border rounded px-4 py-2 mt-1"
                   />
                 </div>
               </div>
 
-              <h3 className="text-lg font-semibold mt-8 mb-2">Password Changes</h3>
+              <h3 className="text-lg font-semibold mt-8 mb-2">
+                Password Changes
+              </h3>
               <div className="space-y-4">
                 <input
                   type="password"
@@ -121,7 +135,9 @@ const Account = () => {
               </div>
 
               <div className="flex justify-end gap-4 mt-8">
-                <button className="text-gray-600 hover:underline">Cancel</button>
+                <button className="text-gray-600 hover:underline">
+                  Cancel
+                </button>
                 <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
                   Save Changes
                 </button>

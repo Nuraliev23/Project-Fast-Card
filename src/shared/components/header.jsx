@@ -12,8 +12,7 @@ import { GetCart } from "../../entities/reducers/counterSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const Header = () => {
-  let cart = useSelector((store) => store.counter.cart);
-  // console.log(cart);
+
   let { wishlist } = useSelector((store) => store.counter);
   // console.log(wishlist);
 let {totalProduct} = useSelector((store)=>store.counter)
