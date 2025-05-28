@@ -3,7 +3,8 @@
     "compilerOptions": {
       "baseUrl": "src",
       "paths": {
-        "@images/*": ["shared/images/*"]
+        "@images/*": ["shared/images/*"],
+        "@api": ["shared/ConfigJs/api.js"],  
       }
     },
     "include": ["src"]

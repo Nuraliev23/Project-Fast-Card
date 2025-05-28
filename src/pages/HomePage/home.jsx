@@ -24,18 +24,14 @@ import service3 from '@images/Services (2).png';
 
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addToCart,
-  addToWishlist,
-  get,
-  get2,
-  GetCart,
-} from "../../entities/counterSlice";
 
 import NewArrival from "../../shared/ui/Widgets/newArrival";
 import TimeOut from "../../shared/ui/Custom/timeOut";
 import Button from "../../shared/ui/Kit/button";
-let api = import.meta.env.VITE_API_URL;
+import api from "../../shared/ConfigJs/api"
+import { getProducts } from "../../entities/Product/productSlice";
+import { getCategories } from "../../entities/Category/categorySlice";
+import { addToCart, getCart } from "../../entities/Cart/cartSlice";
 
 const handleClose = () => {
   setAnchorEl(null);
@@ -49,14 +45,14 @@ function erpost() {
 
 const App = () => {
   const dispatch = useDispatch();
-  let { data } = useSelector((store) => store.counter);
-  let { data2 } = useSelector((store) => store.counter);
+  let { getData } = useSelector((store) => store.products);
+  let { getDataCategory } = useSelector((store) => store.category);
   let { wishlist } = useSelector((store) => store.counter);
 
   useEffect(() => {
-    dispatch(get());
-    dispatch(get2());
-    dispatch(GetCart());
+    dispatch(getProducts());
+    dispatch(getCategories());
+    dispatch(getCart());
   }, []);
 
   return (
@@ -68,7 +64,7 @@ const App = () => {
           className="md:hidden bg-[#F5F5F5] p-[10px_5px] rounded-[5px] mx-auto w-[80%] "
         />
         <aside className="flex md:flex-col gap-[16px] flex-row flex-wrap">
-        {data2.map((e) => (
+        {getDataCategory.map((e) => (
             <div key={e.id}>            
                 <div className="flex flex-col gap-[8px] items-start w-full">
                   <h1>
@@ -235,7 +231,7 @@ const App = () => {
           }}
           className="mySwiper w-full"
         >
-          {data.map((e) => (
+          {getData.map((e) => (
             <SwiperSlide key={e.id}>
               <div className="bg-[#F5F5F5] flex flex-col items-center p-[10px] gap-[10px] rounded-[10px] h-[350px] hover:shadow-lg w-[270px] mx-auto">
                 <div className="flex justify-between w-full">
@@ -360,7 +356,7 @@ const App = () => {
           }}
           className="mySwiper w-full"
         >
-          {data2.map((e) => (
+          {getDataCategory.map((e) => (
             <SwiperSlide key={e.id}>
               <div className="border-[1px] flex flex-col items-center p-[10px] gap-[10px] rounded-[10px] h-[165px] hover:shadow-lg w-[190px] mx-auto">
                 <img
@@ -423,7 +419,7 @@ const App = () => {
           }}
           className="mySwiper w-full"
         >
-          {data.map((e) => (
+          {getData.map((e) => (
             <SwiperSlide key={e.id}>
               <div className="bg-[#F5F5F5] flex flex-col items-center p-[10px] gap-[10px] rounded-[10px] h-[350px] hover:shadow-lg w-[270px] mx-auto">
                 <div className="flex justify-between w-full">
@@ -517,7 +513,7 @@ const App = () => {
 
       <section className="flex flex-col items-center max-w-[1200px] mx-auto pt-[32px] border-b-[1px] border-b-[#d6d4d4]  pb-[60px]">
         <div className=" flex md:flex-wrap gap-[20px] md:flex-row flex-col">
-          {data.map((e) => (
+          {getData.map((e) => (
             <div
               key={e.id}
               className="bg-[#F5F5F5] flex flex-col items-center p-[10px] gap-[10px] rounded-[10px] h-[350px] hover:shadow-lg w-[270px] mx-auto"

@@ -9,14 +9,14 @@ import "swiper/css/thumbs";
 
 import toast from "react-hot-toast";
 
-let api = import.meta.env.VITE_API_URL;
+import api from "../../shared/ConfigJs/api"
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ReplayIcon from "@mui/icons-material/Replay";
 import "./get.css";
 import Button from "../../shared/ui/Kit/button";
-import { addToCart, get } from "../../entities/counterSlice";
+import { addToCart } from "../../entities/counterSlice";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
@@ -26,6 +26,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
 
 import stars from "@images/Five star.png";
+import { getProducts } from "../../entities/Product/productSlice";
 
 function post() {
   toast.success("Added to Wishlist");
@@ -37,10 +38,10 @@ function erpost() {
 const GetId = () => {
   let { wishlist } = useSelector((store) => store.counter);
 
-  let { data } = useSelector((store) => store.counter);
+  let { getData } = useSelector((store) => store.products);
 
   useEffect(() => {
-    dispatch(get());
+    dispatch(getProducts());
   }, []);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
@@ -214,7 +215,7 @@ const GetId = () => {
           }}
           className="mySwiper w-full"
         >
-          {data.map((e) => (
+          {getData.map((e) => (
             <SwiperSlide key={e.id}>
               <div className="bg-[#F5F5F5] flex flex-col items-center p-[10px] gap-[10px] rounded-[10px] h-[350px] hover:shadow-lg w-[270px] mx-auto">
                 <div className="flex justify-between w-full">

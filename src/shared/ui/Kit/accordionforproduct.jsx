@@ -12,12 +12,10 @@ import toast from "react-hot-toast";
 
 import stars from "@images/Five star.png";
 
-let api = import.meta.env.VITE_API_URL;
+import api from "../../ConfigJs/api"
 import {
-  addToCart,
+
   addToWishlist,
-  get2,
-  GetBrands,
   GetMinPrice,
 } from "../../../entities/counterSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,12 +23,17 @@ import { NavLink } from "react-router";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import Button from "./button";
+import { getCategories } from "../../../entities/Category/categorySlice";
+import { getBrands } from "../../../entities/Brands/brandSlice";
+import { addToCart } from "../../../entities/Cart/cartSlice";
 
 const Accordionforproduct = () => {
+    let { getDataCategory } = useSelector((store) => store.category);
+  
   const dispatch = useDispatch();
   //   let { filterPoducts } = useSelector((store) => store.counter);
   let { wishlist } = useSelector((store) => store.counter);
-  const { brands } = useSelector((store) => store.counter);
+  const { brands } = useSelector((store) => store.brand);
   const { data2 } = useSelector((store) => store.counter);
   const { minprice } = useSelector((store) => store.counter);
   //   console.log(minprice);
@@ -38,7 +41,6 @@ const Accordionforproduct = () => {
   const [minPrice, setminPrice] = React.useState("");
   const [categoryId, setcategoryId] = React.useState("");
   const [brandId, setBrandId] = React.useState("");
-  console.log(brandId + "brand", categoryId + "category");
 
   const getProductFilter = async (brandID = "", categoryID = "") => {
     try {
@@ -59,8 +61,8 @@ const Accordionforproduct = () => {
   }
 
   React.useEffect(() => {
-    dispatch(get2());
-    dispatch(GetBrands());
+    dispatch(getCategories());
+    dispatch(getBrands());
     dispatch(GetMinPrice(300));
   }, []);
   React.useEffect(() => {
@@ -78,7 +80,7 @@ const Accordionforproduct = () => {
             >
               <Typography component="span">Category</Typography>
             </AccordionSummary>
-            {data2.map((el) => {
+            {getDataCategory.map((el) => {
               return (
                 <AccordionDetails key={el.id}>
                   <Typography className="flex gap-[10px]">

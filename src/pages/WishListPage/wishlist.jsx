@@ -5,11 +5,11 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-let api = import.meta.env.VITE_API_URL;
+import api from "../../shared/ConfigJs/api"
 
 import "./get.css";
 import Button from "../../shared/ui/Kit/button";
-import { addToCart, addToWishlist, get} from "../../entities/counterSlice";
+import {addToWishlist} from "../../entities/counterSlice";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -19,11 +19,13 @@ import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import stars from "@images/Five star.png";
+import { getProducts } from "../../entities/Product/productSlice";
+import { addToCart } from "../../entities/Cart/cartSlice";
 
 const Wishlist = () => {
-  let { data } = useSelector((store) => store.counter);
+  let { getData } = useSelector((store) => store.products);
   useEffect(() => {
-    dispatch(get());
+    dispatch(getProducts());
   }, []);
 
   const dispatch = useDispatch();
@@ -106,7 +108,7 @@ const Wishlist = () => {
           }}
           className="mySwiper w-full"
         >
-          {data.map((e) => (
+          {getData.map((e) => (
             <SwiperSlide key={e.id}>
               <div className="bg-[#F5F5F5] flex flex-col items-center p-[10px] gap-[10px] rounded-[10px] h-[350px] hover:shadow-lg w-[270px] mx-auto">
                 <div className="flex justify-between w-full">

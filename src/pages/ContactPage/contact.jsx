@@ -1,8 +1,7 @@
 import React from "react";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+
 const Contact = () => {
   return (
     <div>

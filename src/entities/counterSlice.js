@@ -1,18 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-let api = import.meta.env.VITE_API_URL;
+import api from "../shared/ConfigJs/api"
 import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 const savedToken = localStorage.getItem("Token");
 
-export const get = createAsyncThunk("counter/get", async () => {
-  try {
-    let { data } = await axios.get(`${api}/Product/get-products`);
-    return data.data.products;
-  } catch (error) {
-    console.error(error);
-  }
-});
 
 export const getByid = createAsyncThunk("counter/getById", async (id) => {
   try {
@@ -23,137 +15,6 @@ export const getByid = createAsyncThunk("counter/getById", async (id) => {
   }
 });
 
-export const get2 = createAsyncThunk("counter/get2", async () => {
-  try {
-    let { data } = await axios.get(`${api}/Category/get-categories`);
-    return data.data;
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-export const GetCart = createAsyncThunk("counter/GetCart", async () => {
-  const token = localStorage.getItem("Token");
-  if (!token) {
-    return thunkAPI.rejectWithValue("No token provided");
-  }
-  try {
-    const { data } = await axios.get(
-      `https://store-api.softclub.tj/Cart/get-products-from-cart`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return data.data[0];
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-export const addToCart = createAsyncThunk(
-  "counter/addToCart",
-  async (id, { dispatch }) => {
-    try {
-      const token = localStorage.getItem("Token");
-      const { data } = await axios.post(
-        `${api}/Cart/add-product-to-cart?id=${id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      dispatch(GetCart());
-      toast.success("Successfully added to cart")
-      return data.data;
-
-    } catch (error) {
-      console.error(error);
-      
-      toast.error("Already have this product")
-    }
-  }
-);
-
-export const DeleteFromCart = createAsyncThunk(
-  "counter/DeleteFromCart",
-  async (id, { dispatch }) => {
-    try {
-      const token = localStorage.getItem("Token");
-      const { data } = await axios.delete(
-        `${api}/Cart/delete-product-from-cart?id=${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      dispatch(GetCart());
-      return data.data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-);
-export const ClearCart = createAsyncThunk("counter/ClearCart", async (_,{dispatch}) => {
-  try {
-    const token = localStorage.getItem("Token");
-    const { data } = await axios.delete(`${api}/Cart/clear-cart`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    dispatch(GetCart())
-    toast.success("All product removed from cart")
-    return data.data[0].productsInCart;
-
-  } catch (error) {
-    console.error(error);
-  }
-});
-export const IncreaseCart = createAsyncThunk(
-  "counter/IncreaseCart",
-  async (id, { dispatch }) => {
-    try {
-      const token = localStorage.getItem("Token");
-      const { data } = await axios.put(
-        `${api}/Cart/increase-product-in-cart?id=${id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      dispatch(GetCart());
-      return data.data[0].productsInCart;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-);
-export const ReduceCart = createAsyncThunk(
-  "counter/ReduceCart",
-  async (id, { dispatch }) => {
-    try {
-      const token = localStorage.getItem("Token");
-      const { data } = await axios.put(
-        `${api}/Cart/reduce-product-in-cart?id=${id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      dispatch(GetCart());
-      return data.data[0].productsInCart;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-);
-
-
-export const GetBrands = createAsyncThunk("counter/GetBrands", async () => {
-  try {
-    let { data } = await axios.get(`${api}/Brand/get-brands`);
-    return data.data;
-  } catch (error) {
-    console.error(error);
-  }
-});
 export const GetMinPrice = createAsyncThunk(
   "counter/GetMinPrice",
   async (num) => {
@@ -167,7 +28,6 @@ export const GetMinPrice = createAsyncThunk(
     }
   }
 );
-
 export const getProductFilter = createAsyncThunk(
   "counter/getProductFilter",
   async (brandID = "", categoryID = "") => {
@@ -213,16 +73,9 @@ export const login = createAsyncThunk(
 export const counterSlice = createSlice({
   name: "counter",
   initialState: {
-    data: [],
-    data2: [],
     info: {},
-    cart: [],
-    brands: [],
     minprice: [],
-    totalProduct:0,
     token: "",
-    totalprice: "",
-    discountprice: "",
     loginError: null,
     user: savedToken ? jwtDecode(savedToken) : {},
     wishlist: JSON.parse(localStorage.getItem("wishlist")) || [],
@@ -247,21 +100,15 @@ export const counterSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(get.fulfilled, (state, action) => {
-        state.data = action.payload;
-      })
+
       .addCase(GetUserId.fulfilled, (state, action) => {
         state.user = action.payload;
       })
-      .addCase(GetBrands.fulfilled, (state, action) => {
-        state.brands = action.payload;
-      })
+
       .addCase(GetMinPrice.fulfilled, (state, action) => {
         state.minprice = action.payload;
       })
-      .addCase(get2.fulfilled, (state, action) => {
-        state.data2 = action.payload;
-      })
+
       .addCase(getByid.fulfilled, (state, action) => {
         state.info = action.payload;
       })
@@ -270,31 +117,13 @@ export const counterSlice = createSlice({
         const decoded = jwtDecode(token);
 
         state.token = token;
-        state.user = decoded; // теперь ты сохраняешь юзера
+        state.user = decoded; 
         state.loginError = null;
       })
       .addCase(login.rejected, (state, action) => {
         state.loginError = action.payload; // "Invalid credentials"
       })
-      .addCase(GetCart.fulfilled, (state, action) => {
-        state.cart = action.payload.productsInCart;
-        state.totalProduct = action.payload.totalProducts;
-        state.discountprice = action.payload.totalDiscountPrice;
-        state.totalprice = action.payload.totalPrice;
-
-      })
-      .addCase(addToCart.fulfilled, (state, action) => {
-        state.cart.push(action.payload);
-      })
-      .addCase(DeleteFromCart.fulfilled, (state, action) => {
-        state.cart = state.cart.filter((el) => el.id != action.payload);
-      })
-      .addCase(ClearCart.fulfilled, (state, action) => {
-        state.cart = action.payload;
-      })
-      .addCase(IncreaseCart.fulfilled, (state, action) => {
-        state.cart = action.payload;
-      })
+     
     
      
   },

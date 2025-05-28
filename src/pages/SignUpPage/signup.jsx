@@ -3,8 +3,7 @@ import TextField from "@mui/material/TextField";
 import { NavLink } from "react-router";
 import axios from "axios";
 import toast from "react-hot-toast";
-import saveSettings from "react-hot-toast";
-let api = import.meta.env.VITE_API_URL;
+import api from "../../shared/ConfigJs/api"
 
 
 const Signup = () => {

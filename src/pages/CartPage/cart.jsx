@@ -1,31 +1,25 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  DeleteFromCart,
-  ClearCart,
-  IncreaseCart,
-  ReduceCart,
-  GetCart,
-} from "../../entities/counterSlice";
+
 import { NavLink } from "react-router";
-let api = import.meta.env.VITE_API_URL;
+import api from "../../shared/ConfigJs/api"
 
 import toast from "react-hot-toast";
+import { clearCart, deleteFromCart, getCart, increaseCart, reduceCart } from "../../entities/Cart/cartSlice";
 
 function erpost() {
   toast.success("Product successfully removed from cart");
 }
 
 const Cart = () => {
-  let cart = useSelector((store) => store.counter.cart);
+  let {cartData} = useSelector((store) => store.cart);
 
-  console.log(cart);
   
-  let totalprice = useSelector((store) => store.counter.totalprice);
-  let discountprice = useSelector((store) => store.counter.discountprice);
+  let {totalPrice} = useSelector((store) => store.cart);
+  let {discountPrice} = useSelector((store) => store.cart);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(GetCart());
+    dispatch(getCart());
     // dispatch(get());
   }, []);
   return (
@@ -42,7 +36,7 @@ const Cart = () => {
           </thead>
           <tbody>
           {
- cart?.map((el) => (
+ cartData?.map((el) => (
     <tr key={el.id} className="bg-white shadow rounded-lg">
       <td className="py-4 px-4">
         <div className="flex items-center gap-4">
@@ -52,7 +46,7 @@ const Cart = () => {
                 ? `${api}/images/${el.product.image}`
                 : "placeholder.jpg"
             }
-            alt={el.product?.productName || "Product"} // ✅ безопасно
+            alt={el.product?.productName || "Product"} 
             className="w-16 h-16 object-cover rounded"
           />
           <span className="font-medium">
@@ -66,14 +60,14 @@ const Cart = () => {
       <td className="py-4 px-4">
         <div className="flex items-center gap-2">
           <button
-            onClick={() => dispatch(ReduceCart(el.id))}
+            onClick={() => dispatch(reduceCart(el.id))}
             className="border rounded px-2 cursor-pointer"
           >
             -
           </button>
           <span>{String(el.quantity).padStart(2, "0")}</span>
           <button
-            onClick={() => dispatch(IncreaseCart(el.id))}
+            onClick={() => dispatch(increaseCart(el.id))}
             className="border rounded px-2 cursor-pointer"
           >
             +
@@ -85,7 +79,7 @@ const Cart = () => {
           ${el.product?.price ? el.quantity * el.product.price : "0.00"}
         </span>
         <button
-          onClick={() => {dispatch(DeleteFromCart(el.id))
+          onClick={() => {dispatch(deleteFromCart(el.id))
             erpost()
           }}
           className="text-red-500 hover:text-red-700 text-xl cursor-pointer"
@@ -110,7 +104,7 @@ const Cart = () => {
             Update Cart
           </button>
           <button
-            onClick={() => {dispatch(ClearCart())
+            onClick={() => {dispatch(clearCart())
               
             }}
             className="border border-red-500 text-red-500 px-6 py-2 rounded hover:bg-red-50 cursor-pointer"
@@ -126,7 +120,7 @@ const Cart = () => {
           </button>
           <div className="flex gap-4">
             <button
-              onClick={() => dispatch(ClearCart())}
+              onClick={() => dispatch(clearCart())}
               className="border border-red-500 text-red-500 px-6 py-2 rounded hover:bg-red-50"
             >
               Apply
@@ -139,19 +133,19 @@ const Cart = () => {
 
           <div className="flex justify-between mb-2">
             <span>Subtotal:</span>
-            <span>$ {totalprice}</span>
+            <span>$ {totalPrice}</span>
           </div>
 
           <div className="flex justify-between mb-4">
             <span>Shipping:</span>
-            <span>$ {discountprice}</span>
+            <span>$ {discountPrice}</span>
           </div>
 
           <hr className="mb-4" />
 
           <div className="flex justify-between text-lg font-semibold mb-6">
             <span>Total:</span>
-            <span>$ {totalprice-discountprice}</span>
+            <span>$ {totalPrice-discountPrice}</span>
           </div>
 
           <button className="w-[60%] bg-red-500 hover:bg-red-600 text-white py-3 rounded-md transition">

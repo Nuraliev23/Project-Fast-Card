@@ -1,24 +1,23 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GetCart,
-  ClearCart,
-} from "../../entities/counterSlice";
+
 import toast from "react-hot-toast";
 
 import oplata from "@images/Frame 834.png";
 import { NavLink } from "react-router";
 
-let api = import.meta.env.VITE_API_URL;
+import api from "../../shared/ConfigJs/api"
+
+import { clearCart, getCart } from "../../entities/Cart/cartSlice";
 
 const Checkout = () => {
-  let cart = useSelector((store) => store.counter.cart);
-  let totalprice = useSelector((store) => store.counter.totalprice);
-  let discountprice = useSelector((store) => store.counter.discountprice);
+  let {cartData} = useSelector((store) => store.cart);
+  let {totalPrice} = useSelector((store) => store.cart);
+  let {discountPrice} = useSelector((store) => store.cart);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(GetCart());
+    dispatch(getCart());
   }, []);
 
 function post() {
@@ -104,8 +103,8 @@ function post() {
 
         <div className="md:w-[45%] w-[90%]">
           <div className=" ">
-            {Array.isArray(cart) &&
-              cart.map((el) => {
+            {Array.isArray(cartData) &&
+              cartData.map((el) => {
                 return (
                   <div key={el.id} className="flex mb-2">
                     <div className="flex items-center gap-4 p-[4px] justify-between  w-[100%]">
@@ -133,15 +132,15 @@ function post() {
           </div>
           <div className="flex justify-between mb-2">
             <span>Subtotal:</span>
-            <span>$ {totalprice}</span>
+            <span>$ {totalPrice}</span>
           </div>
           <div className="flex justify-between mb-4 border-b-[1px] border-[#8080807e] pb-[16px]">
             <span>Shipping:</span>
-            <span>$ {discountprice}</span>
+            <span>$ {discountPrice}</span>
           </div>
           <div className="flex justify-between text-lg font-semibold mb-6">
             <span>Total:</span>
-            <span>$ {totalprice - discountprice}</span>
+            <span>$ {totalPrice - discountPrice}</span>
           </div>
           <div className="flex justify-between items-center">
             <div className="flex gap-[16px] items-center">
@@ -160,7 +159,7 @@ function post() {
             </button>
             <div className="flex gap-4">
               <button
-                onClick={() => dispatch(ClearCart())}
+                onClick={() => dispatch(clearCart())}
                 className="border border-red-500 text-red-500 px-6 py-2 rounded hover:bg-red-50"
               >
                 Apply
@@ -168,7 +167,7 @@ function post() {
             </div>
           </div>
           <button onClick={()=>{post()
-            dispatch(ClearCart())
+            dispatch(clearCart())
           }} className="w-[60%] bg-red-500 hover:bg-red-600 text-white py-3 rounded-md transition mt-[30px] cursor-pointer">
           <NavLink to="/">Place Order</NavLink>
           </button>

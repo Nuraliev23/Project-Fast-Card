@@ -7,8 +7,8 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout());        // 1. Удаляем токен из Redux и localStorage
-    navigate("login");        // 2. Перенаправляем на страницу входа
+    dispatch(logout());
+    navigate("login");
   };
 
   return <button onClick={handleLogout}>Logout</button>;

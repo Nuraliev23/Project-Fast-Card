@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
-import logo from "@images/Group 1116606595.png"
+import logo from "@images/Group 1116606595.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dashboard from "../Custom/dashboard";
 import { Badge, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { GetCart } from "../../../entities/counterSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Accauntdashboard from "../custom/accauntdashboard";
+import { getCart } from "../../../entities/Cart/cartSlice";
 
 const Header = () => {
-
   let { wishlist } = useSelector((store) => store.counter);
   // console.log(wishlist);
-let {totalProduct} = useSelector((store)=>store.counter)
+  let { totalProduct } = useSelector((store) => store.cart);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(GetCart());
+    dispatch(getCart());
   }, []);
 
   return (
@@ -34,7 +33,9 @@ let {totalProduct} = useSelector((store)=>store.counter)
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                  isActive
+                    ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]"
+                    : "text-gray-700"
                 }
               >
                 Home
@@ -44,7 +45,9 @@ let {totalProduct} = useSelector((store)=>store.counter)
               <NavLink
                 to="contact"
                 className={({ isActive }) =>
-                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                  isActive
+                    ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]"
+                    : "text-gray-700"
                 }
               >
                 Contact
@@ -54,7 +57,9 @@ let {totalProduct} = useSelector((store)=>store.counter)
               <NavLink
                 to="about"
                 className={({ isActive }) =>
-                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                  isActive
+                    ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]"
+                    : "text-gray-700"
                 }
               >
                 About
@@ -64,7 +69,9 @@ let {totalProduct} = useSelector((store)=>store.counter)
               <NavLink
                 to="signup"
                 className={({ isActive }) =>
-                  isActive ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]" : "text-gray-700"
+                  isActive
+                    ? "text-[#DB4444] font-bold border-b-[#DB4444] border-b-[2px]"
+                    : "text-gray-700"
                 }
               >
                 Sign Up
@@ -78,13 +85,13 @@ let {totalProduct} = useSelector((store)=>store.counter)
               className="bg-[#F5F5F5] p-[3px_10px] rounded-[5px] w-[240px] hidden md:inline"
             />
             <div className="hidden md:inline">
-            <NavLink to="wishlist">
-              <IconButton color="inherit">
-                <Badge badgeContent={wishlist.length} color="error">
-                  <FavoriteBorderIcon className="bg-white rounded-full p-[3px]" />
-                </Badge>
-              </IconButton>
-            </NavLink>
+              <NavLink to="wishlist">
+                <IconButton color="inherit">
+                  <Badge badgeContent={wishlist.length} color="error">
+                    <FavoriteBorderIcon className="bg-white rounded-full p-[3px]" />
+                  </Badge>
+                </IconButton>
+              </NavLink>
             </div>
             <div>
               <NavLink to="cart">
@@ -95,7 +102,7 @@ let {totalProduct} = useSelector((store)=>store.counter)
                 </IconButton>
               </NavLink>
             </div>
-            <Accauntdashboard/>
+            <Accauntdashboard />
           </div>
         </nav>
       </header>
