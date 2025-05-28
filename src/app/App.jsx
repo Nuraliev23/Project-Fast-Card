@@ -15,10 +15,10 @@ import {
   Signup,
   Wishlist,
   Checkout,
-} from "../pages/lazy/lazy.jsx";
-import { store } from "../entities/store/store.js";
+} from "./Providers/lazy/lazy.jsx";
+import { store } from "./store.js";
 import { Provider } from "react-redux";
-import Loading from "../shared/components/loading.jsx";
+import Loading from "../shared/ui/custom/loading.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

@@ -1,0 +1,11 @@
+// jsconfig.json
+{
+    "compilerOptions": {
+      "baseUrl": "src",
+      "paths": {
+        "@images/*": ["shared/images/*"]
+      }
+    },
+    "include": ["src"]
+  }
+  
