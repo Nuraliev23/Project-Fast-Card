@@ -1,12 +1,70 @@
-# React + Vite
+# FastCardOnlineShop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FastCardOnlineShop — это учебный проект интернет-магазина с возможностью добавления товаров в wishlist и корзину, оформления заказов, а также с поддержкой панели администратора.
 
-Currently, two official plugins are available:
+## 🛒 Функциональность
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Добавление товаров в корзину
+- Добавление товаров в wishlist
+- Оформление заказа
+- Фильтрация и сортировка товаров
+- Админ-панель для управления товарами
+- Авторизация и регистрация
 
-## Expanding the ESLint configuration
+## 🔐 Авторизация
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Реализована система логина/регистрации
+- Защищённые маршруты для авторизованных пользователей
+- Работа с токеном и `localStorage`
+
+## 📄 Основные страницы
+
+- Home
+- About
+- Contact
+- SignUp
+- Account
+- Checkout
+- Прочие
+
+## 🧩 Состояния и логика
+
+Используются слайсы Redux Toolkit:
+
+- `cart`
+- `auth`
+- `filter`
+- `sort`
+- `adminka`
+
+## 🌐 Демо
+
+[Перейти к демо](https://project-fast-cart.vercel.app/)
+
+🌐 API
+
+Проект использует внешний API:
+
+https://store-api.softclub.tj
+
+Хранение токена происходит в localStorage, с последующим декодированием через jwt-decode.
+
+## 📦 Тип проекта
+
+Учебный (pet project)
+
+🧪 Назначение проекта
+
+Проект создан в учебных целях и демонстрирует работу с авторизацией, корзиной, фильтрацией товаров и архитектурой FSD.
+---
+
+📁 Структура проекта (FSD)
+src/
+🔜 app/               # Инициализация store, роутинг
+🔜 entities/          # Redux slices, связанные с логикой
+🔜 features/          # Отдельные фичи: cart, auth и т.д.
+🔜 pages/             # Страницы приложения
+🔜 shared/            # Утилиты, UI-компоненты, конфиги
+🔜 widgets/           # Компоненты верхнего уровня (layout
+
+Feel free to contribute or expand!
